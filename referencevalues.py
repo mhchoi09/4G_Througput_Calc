@@ -1,17 +1,28 @@
+import bisect
+
 table_lte_bands = {
     1: {"type": "FDD", "frequency": "2100", "range": ["1920-1980", "2110-2170"], "bandwidths": [5, 10, 15, 20],
-        "earfcn": [0, 599], "rel": 8},
+        "earfcn": [0, 599], "rel": 8, 'FDL_Low': 2110, 'NDL_Offset': 0, 'DL_range': (0, 599), 'FUL_Low': 1920,
+        'NUL_Offset': 18000, 'UP_range': (1800, 18599), },
     2: {"type": "FDD", "frequency": "1900", "range": ["1850-1910", "1930-1990"], "bandwidths": [1.4, 3, 5, 10, 15, 20],
-        "earfcn": [600, 1199], "rel": 8},
+        "earfcn": [600, 1199], "rel": 8, 'FDL_Low': 1930, 'NDL_Offset': 600, 'DL_range': (600, 1199), 'FUL_Low': 1850,
+        'NUL_Offset': 18600, 'UP_range': (18600, 19199), },
     3: {"type": "FDD", "frequency": "1800", "range": ["1710-1785", "1805-1880"], "bandwidths": [1.4, 3, 5, 10, 15, 20],
-        "earfcn": [1200, 1949], "rel": 8},
+        "earfcn": [1200, 1949], "rel": 8, 'FDL_Low': 1805, 'NDL_Offset': 1200, 'DL_range': (1200, 1949),
+        'FUL_Low': 1710,
+        'NUL_Offset': 19200, 'UP_range': (19200, 19949), },
     4: {"type": "FDD", "frequency": "1700", "range": ["1710-1755", "2110-2155"], "bandwidths": [1.4, 3, 5, 10, 15, 20],
-        "earfcn": [1950, 2399], "rel": 8},
+        "earfcn": [1950, 2399], "rel": 8, 'FDL_Low': 2110, 'NDL_Offset': 1950, 'DL_range': (1950, 2399),
+        'FUL_Low': 1710,
+        'NUL_Offset': 19950, 'UP_range': (19950, 20399), },
     5: {"type": "FDD", "frequency": "850", "range": ["824-849", "869-894"], "bandwidths": [1.4, 3, 5, 10],
-        "earfcn": [2400, 2649], "rel": 8},
-    6: {"type": "FDD", "frequency": "850", "range": ["830-840", "875-885"], "bandwidths": [5, 10], "rel": 8},
+        "earfcn": [2400, 2649], "rel": 8, 'FDL_Low': 869, 'NDL_Offset': 2400, 'DL_range': (2400, 2649), 'FUL_Low': 824,
+        'NUL_Offset': 20400, 'UP_range': (20400, 20649), },
+    6: {"type": "FDD", "frequency": "850", "range": ["830-840", "875-885"], "bandwidths": [5, 10], "rel": 8, 'FDL_Low': 875,
+        'NDL_Offset': 2650, 'DL_range': (2650, 2749), 'FUL_Low': 830, 'NUL_Offset': 20650, 'UP_range': (20650, 20749), },
     7: {"type": "FDD", "frequency": "2600", "range": ["2500-2570", "2620-2690"], "bandwidths": [5, 10, 15, 20],
-        "earfcn": [2750, 3449], "rel": 8},
+        "earfcn": [2750, 3449], "rel": 8, 'FDL_Low': 2620, 'NDL_Offset': 2750, 'DL_range': (2750, 3449), 'FUL_Low': 2500,
+        'NUL_Offset': 20750, 'UP_range': (20750, 21449), },
     8: {"type": "FDD", "frequency": "900", "range": ["880-915", "925-960"], "bandwidths": [1.4, 3, 5, 10],
         "earfcn": [3450, 3799], "rel": 8},
     9: {"type": "FDD", "frequency": "1800", "range": ["1749.9-1784.9", "1844.9-1879.9"], "bandwidths": [5, 10, 15, 20],
@@ -195,24 +206,41 @@ modulation = {
     '1024QAM': 16,
 }
 
-class LTEBandDecode:
+
+class LTEParameters:
+
+    def availablebw(lteband):
+        bandwidth = table_lte_bands[lteband]['bandwidths']
+        return bandwidth
+
+    def verifybw(lteband, bw):
+        bandwidth = table_lte_bands[lteband]['bandwidths']
+        try:
+            bw = bandwidth.index(bw)
+        except ValueError:
+            return False
+        else:
+            return True
+
+
+class EARFCNCalculator:
+
+    def band_ndl(num, breakpoints=None, result=None):
+        if result is None:
+            result = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                      30, 31, 32]
+        if breakpoints is None:
+            breakpoints = [599, 1199, 1949, 2399, 2649, 2749, 3449, 4149, 4749, 4949, 5179, 5279, 5379, 5849, 5999,
+                           6149, 6449, 6559, 7399, 7699, 8039, 8689, 9039, 9209, 9659, 9769, 9869, 9919, 10359, 36199]
+        i = bisect.bisect(breakpoints, num - 1)
+        return result[i]
 
     def earfcnlimits(lteband):
         earfcn_low = table_lte_bands[lteband]['earfcn'][0]
         earfcn_high = table_lte_bands[lteband]['earfcn'][1]
-        type = table_lte_bands[lteband]['type']
-        return earfcn_low, earfcn_high, type
+        return earfcn_low, earfcn_high
 
-    def availableBW(lteband):
-        bandwidth = table_lte_bands[lteband]['bandwidths']
-        return bandwidth
-
-    def selectedBW(lteband, bw):
-        bandwidth = table_lte_bands[lteband]['bandwidths']
-        try:
-            b = bandwidth.index(bw)
-        except ValueError:
-            b = 'invalid'
-        else:
-            bw = b
-        return bw
+    def dlfrequency(earfcn, lteband):
+        fdl = table_lte_bands[lteband]['FDL_Low'] + 0.1 * (earfcn - table_lte_bands[lteband]['NDL_Offset'])
+        dlearfcn = earfcn
+        return fdl, dlearfcn
