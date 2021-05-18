@@ -1,4 +1,4 @@
-lte_bands = {
+table_lte_bands = {
     1: {"type": "FDD", "frequency": "2100", "range": ["1920-1980", "2110-2170"], "bandwidths": [5, 10, 15, 20],
         "earfcn": [0, 599], "rel": 8},
     2: {"type": "FDD", "frequency": "1900", "range": ["1850-1910", "1930-1990"], "bandwidths": [1.4, 3, 5, 10, 15, 20],
@@ -195,4 +195,24 @@ modulation = {
     '1024QAM': 16,
 }
 
-class LTEBandDecode ():
+class LTEBandDecode:
+
+    def earfcnlimits(lteband):
+        earfcn_low = table_lte_bands[lteband]['earfcn'][0]
+        earfcn_high = table_lte_bands[lteband]['earfcn'][1]
+        type = table_lte_bands[lteband]['type']
+        return earfcn_low, earfcn_high, type
+
+    def availableBW(lteband):
+        bandwidth = table_lte_bands[lteband]['bandwidths']
+        return bandwidth
+
+    def selectedBW(lteband, bw):
+        bandwidth = table_lte_bands[lteband]['bandwidths']
+        try:
+            b = bandwidth.index(bw)
+        except ValueError:
+            b = 'invalid'
+        else:
+            bw = b
+        return bw
