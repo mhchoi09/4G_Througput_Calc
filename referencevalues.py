@@ -57,62 +57,48 @@ modulation = {
     '1024QAM': 16,
 }
 
-cqi = {
-    0: {
-        'modulation': 'QPKS',
-        'tbsindex': 0,
-    },
-    1: {
-        'modulation': 'QPKS',
-        'tbsindex': 1,
-    },
-    2: {
-        'modulation': 'QPKS',
-        'tbsindex': 2,
-    },
-    3: {
-        'modulation': 'QPKS',
-        'tbsindex': 3,
-    },
-    4: {
-        'modulation': 'QPKS',
-        'tbsindex': 4,
-    },
-    5: {
-        'modulation': 'QPKS',
-        'tbsindex': 5,
-    },
+dl_tbs = {
     6: {
-        'modulation': 'QPKS',
-        'tbsindex': 6,
+        'mcs': 28,
+        'i_tbs': 26,
+        'tbs': 4392,
+        'SISO': 4.19,
+        'MIMO': 8.38,
     },
-    7: {
-        'modulation': 'QPKS',
-        'tbsindex': 7,
+    15: {
+        'mcs': 28,
+        'i_tbs': 26,
+        'tbs': 11064,
+        'SISO': 10.55,
+        'MIMO': 21.10,
     },
-    8: {
-        'modulation': 'QPKS',
-        'tbsindex': 8,
+    25: {
+        'mcs': 28,
+        'i_tbs': 26,
+        'tbs': 18336,
+        'SISO': 17.49,
+        'MIMO': 34.79,
     },
-    9: {
-        'modulation': 'QPKS',
-        'tbsindex': 9,
+    50: {
+        'mcs': 28,
+        'i_tbs': 26,
+        'tbs': 36696,
+        'SISO': 35,
+        'MIMO': 69.99,
     },
-    10:{
-        'modulation': '16QAM',
-        'tbsindex': 9,
+    75: {
+        'mcs': 28,
+        'i_tbs': 26,
+        'tbs': 55056,
+        'SISO': 52.51,
+        'MIMO': 105.01,
     },
-    11: {
-        'modulation': '16QAM',
-        'tbsindex': 11,
-    },
-    12: {
-        'modulation': '16QAM',
-        'tbsindex': 12,
-    },
+
 }
 
 print(cqi[0]['tbsindex'])
 bitrateperrb = (modulation['64QAM']*resourceblock['symbols']*resourceblock['subcarrier'])/1000
 throughput = bandwidth[20]['resource_block']*bitrateperrb
 print(throughput)
+
+physicalthroughput =
