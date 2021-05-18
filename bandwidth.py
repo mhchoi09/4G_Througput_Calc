@@ -42,6 +42,12 @@ resourceblock = {
     'bandwidth': 180,
     'symbols': 14,
 }
+radioframe = {
+    'subframe': 10,
+    'slots': 20,
+    'symbols': 140,
+    'time': 10,
+}
 
 modulation = {
     'QPSK': 2,
@@ -52,5 +58,5 @@ modulation = {
 }
 
 bitrateperrb = (modulation['64QAM']*resourceblock['symbols']*resourceblock['subcarrier'])/1000
-throughput = bandwidth[20]['resource_block']*bitrateperrb
+throughput = bandwidth[20]['resource_block']*bitrateperrb*2
 print(throughput)
