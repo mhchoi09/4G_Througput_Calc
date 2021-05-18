@@ -1,4 +1,4 @@
-table_bw = {
+bandwidth = {
     1.4: {
         'resource_block': 6,
         'subcarriers': 72,
@@ -37,32 +37,13 @@ table_bw = {
     },
 }
 
-table_framestructure = {
-    'resourceblock': {
-        'subcarrier': 12,
-        'bandwidth': 180
-    },
-    'schedulingblock': {
-        'resourceblock': 2,
-        'symbols': 14,
-    },
-    'slot': {
-        'symbols': 7,
-    },
-    'subframe': {
-        'slots': 2,
-        'symbols': 14,
-        'time': 1,
-    },
-    'radioframe': {
-        'symbols': 140,
-        'slots': 20,
-        'subframe': 10,
-        'time': 10,
-    },
+resourceblock = {
+    'subcarrier': 12,
+    'bandwidth': 180,
+    'symbols': 14,
 }
 
-table_modulation = {
+modulation = {
     'QPSK': 2,
     '16QAM': 4,
     '64QAM': 6,
@@ -70,4 +51,6 @@ table_modulation = {
     '1024QAM': 16,
 }
 
-print(table_modulation['256QAM'])
+bitrateperrb = (modulation['64QAM']*resourceblock['symbols']*resourceblock['subcarrier'])/1000
+throughput = bandwidth[20]['resource_block']*bitrateperrb
+print(throughput)
