@@ -57,6 +57,62 @@ modulation = {
     '1024QAM': 16,
 }
 
+cqi = {
+    0: {
+        'modulation': 'QPKS',
+        'tbsindex': 0,
+    },
+    1: {
+        'modulation': 'QPKS',
+        'tbsindex': 1,
+    },
+    2: {
+        'modulation': 'QPKS',
+        'tbsindex': 2,
+    },
+    3: {
+        'modulation': 'QPKS',
+        'tbsindex': 3,
+    },
+    4: {
+        'modulation': 'QPKS',
+        'tbsindex': 4,
+    },
+    5: {
+        'modulation': 'QPKS',
+        'tbsindex': 5,
+    },
+    6: {
+        'modulation': 'QPKS',
+        'tbsindex': 6,
+    },
+    7: {
+        'modulation': 'QPKS',
+        'tbsindex': 7,
+    },
+    8: {
+        'modulation': 'QPKS',
+        'tbsindex': 8,
+    },
+    9: {
+        'modulation': 'QPKS',
+        'tbsindex': 9,
+    },
+    10:{
+        'modulation': '16QAM',
+        'tbsindex': 9,
+    },
+    11: {
+        'modulation': '16QAM',
+        'tbsindex': 11,
+    },
+    12: {
+        'modulation': '16QAM',
+        'tbsindex': 12,
+    },
+}
+
+print(cqi[0]['tbsindex'])
 bitrateperrb = (modulation['64QAM']*resourceblock['symbols']*resourceblock['subcarrier'])/1000
-throughput = bandwidth[20]['resource_block']*bitrateperrb*2
+throughput = bandwidth[20]['resource_block']*bitrateperrb
 print(throughput)
