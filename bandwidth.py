@@ -37,11 +37,37 @@ table_bw = {
     },
 }
 
-table_resource_block = {
-    1: {
+table_framestructure = {
+    'resourceblock': {
         'subcarrier': 12,
         'bandwidth': 180
     },
+    'schedulingblock': {
+        'resourceblock': 2,
+        'symbols': 14,
+    },
+    'slot': {
+        'symbols': 7,
+    },
+    'subframe': {
+        'slots': 2,
+        'symbols': 14,
+        'time': 1,
+    },
+    'radioframe': {
+        'symbols': 140,
+        'slots': 20,
+        'subframe': 10,
+        'time': 10,
+    },
 }
 
+table_modulation = {
+    'QPSK': 2,
+    '16QAM': 4,
+    '64QAM': 6,
+    '256QAM': 8,
+    '1024QAM': 16,
+}
 
+print(table_modulation['256QAM'])
