@@ -1,2 +1,3 @@
-# 4G_Througput_Calc
-Theoretical Maximum Throughput Speed for 4G
+EARFCN - 4G LTE Theoretical Data Rate Calculator
+
+--- Work in Progress --
